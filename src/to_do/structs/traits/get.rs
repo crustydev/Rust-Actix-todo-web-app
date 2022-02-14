@@ -1,5 +1,5 @@
 use serde_json::Map;
-use serde_json::value::Value
+use serde_json::value::Value;
 
 
 pub trait Get {
@@ -10,7 +10,7 @@ pub trait Get {
                 println!("\n\nItem: {}", title);
                 println!("Status: {}", result);
             },
-            None => println!("Item: {} not found", title);
+            None => println!("Item: {} not found", title)
         }
     }
 }

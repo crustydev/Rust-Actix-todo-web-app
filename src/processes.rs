@@ -5,10 +5,10 @@ use serde_json::value::Value;
 
 use super::to_do::ItemTypes;
 use super::to_do::structs::done::Done;
-use super::to_do:structs::pending::Pending;
+use super::to_do::structs::pending::Pending;
 use super::to_do::structs::traits::get::Get;
-use super::to_do:structs::traits::create::Create;
-use super::to_d0::structs::traits::edit::Edit;
+use super::to_do::structs::traits::create::Create;
+use super::to_do::structs::traits::edit::Edit;
 use super::to_do::structs::traits::delete::Delete;
 
 
@@ -28,7 +28,7 @@ fn process_done(item: Done, command: String, state: &Map<String, Value>) {
     let mut state = state.clone();
     match command.as_str() {
         "get" => item.get(&item.super_struct.title, &state),
-        "edit" => item.set_to_pending(&item.super_struct.title, &mut state)
+        "edit" => item.set_to_pending(&item.super_struct.title, &mut state),
         "delete" => item.delete(&item.super_struct.title, &mut state),
         _ => println!("command: {} not found", command)
     }

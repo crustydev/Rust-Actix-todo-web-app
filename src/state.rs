@@ -12,13 +12,13 @@ use serde_json::json;
 // This function returns the content of a json file as a data structure(a serde Map)
 pub fn read_file(file_name: &str) -> Map<String, Value> {
     // open file
-    let mut file = File::open(file_name.to_string().unwrap());
+    let mut file = File::open(file_name.to_string()).unwrap();
     // create String for reading file contents into
     let mut data = String::new();
     // read contents into String
     file.read_to_string(&mut data).unwrap();
     // use serde's from_str() function. It returns a "Value" datatype
-    let json: Value = serde::json::from_str(&data).unwrap();
+    let json: Value = serde_json::from_str(&data).unwrap();
     // convert the Value datatype into a Map<String, Value> and return
     let state: Map<String, Value> = json.as_object().unwrap().clone();
     return state;

@@ -29,7 +29,7 @@ fn main() {
             status = result.to_string().replace('\"', "");
         }
         None => {
-            status = "pending";
+            status = String::from("pending");
         }
     }
 
