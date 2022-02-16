@@ -4,6 +4,7 @@ mod create;
 mod get;
 mod utils;
 mod edit;
+mod delete;
 use super::path::Path;
 
 
@@ -18,5 +19,7 @@ pub fn item_factory(app:&mut web::ServiceConfig) {
         .route(&base_path.define(String::from("/get")),
                 web::get().to(get::get))
         .route(&base_path.define(String::from("/edit")),
-                web::put().to(edit::edit));
+                web::put().to(edit::edit))
+        .route(&base_path.define(String::from("/delete")),
+                web::post().to(delete::delete));
 }
