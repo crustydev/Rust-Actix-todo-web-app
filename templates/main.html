@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width,
+            initial-scale=1.0"/>
+        <meta httpEquiv="X-UA-Compatible" content="ie=edge"/>
+        <meta name="description" content="This is a simple todo app"/>
+        <title> To Do App </title>
+    </head>
+
+    <body>
+        	<h1>To Do Items</h1>
+            <input type="text" id="name" placeholder="create to do item">
+            <button id="create-button" value="Send">Create</button>
+    </body>
+
+    <script>
+
+        function postAlert() {
+            //get input field
+            let titleInput = document.getElementById("name");
+            //create alert with value of input field
+            alert(titleInput.value);
+            //set input field back to empty
+            titleInput.value = null;
+        }
+
+        //get button
+        let createButton = document.getElementById("create-button");
+        //when button is clicked, call postAlert function
+        createButton.addEventListener("click", postAlert);
+
+    </script>
+</html>
