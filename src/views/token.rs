@@ -12,7 +12,7 @@ fn extract_header_token(request: &ServiceRequest) ->
 {
     match request.headers().get("user-token") {
         Some(token) => {
-            match token.to_str {
+            match token.to_str() {
                 Ok(processed_password) => Ok(
                     String::from(processed_password)),
                 Err(_processed_password) => Err(
