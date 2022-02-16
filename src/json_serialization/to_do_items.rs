@@ -1,9 +1,14 @@
 // define our json_serialization structs, that is an object representation of how we want
 // our json data to be formatted.
+use std::vec::Vec;
 
+use actix_web::{Responder, Error, HttpRequest, HttpResponse};
 use serde::Serialize;
+
+
 use crate::to_do::ItemTypes;
 use crate::to_do::structs::base::Base;
+use futures::future::{ready, Ready};
 
 
 /* json formatted data will look something like:
@@ -24,6 +29,7 @@ use crate::to_do::structs::base::Base;
 */
 
 // implement the Serialize trait
+
 #[derive(Serialize)]
 pub struct ToDoItems {
     pub pending_items: Vec<Base>,
@@ -57,5 +63,20 @@ impl ToDoItems {
             pending_item_count: pending_count,
             done_item_count: done_count
         }
+    }
+}
+
+// Implement responder for ToDoItems so it can be directly returned in a view
+impl Responder for ToDoItems {
+    type Error = Error;
+    //Ready is a struct from the futures crate which denotes that the future
+    //is immediately ready with a value.
+    type Future = Ready<Result<HttpResponse, Error>>;
+
+    fn respond_to(self, _req: &HttpRequest) -> Self::Future {
+        let body = serde_json::to_string(&self).unwrap();
+        ready(Ok(HttpResponse::Ok()
+                .content_type("application/json")
+                .body(body)))
     }
 }

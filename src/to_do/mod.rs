@@ -3,7 +3,6 @@ pub mod structs;
 use structs::done::Done;
 use structs::pending::Pending;
 
-
 /// We define this type to return our to_do item
 pub enum ItemTypes {
     Pending(Pending),
