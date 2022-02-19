@@ -12,10 +12,14 @@ pub async fn items() -> HttpResponse {
 
 pub async fn items() -> HttpResponse {
     let mut html_data = read_file("./templates/main.html");
-    let javascript_data = read_file("./javascript/main.js");
+    let javascript_data: String = read_file("./javascript/main.js");
+    let css_data: String = read_file("./css/main.css");
+    let base_css_data: String = read_file("./css/base.css");
 
-    //find "{{JAVASCRIPT}}" in html file and replace it with code in javascript file
     html_data = html_data.replace("{{JAVASCRIPT}}", &javascript_data);
+    html_data = html_data.replace("{{CSS}}", &css_data);
+    html_data = html_data.replace("{{BASE_CSS}}", &base_css_data);
+
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(html_data)

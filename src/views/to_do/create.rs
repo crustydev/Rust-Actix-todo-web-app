@@ -8,7 +8,7 @@ use crate::processes::process_input;
 
 pub async fn create(req: HttpRequest) -> String {
     // get state from json file
-    let state: Map<String, Value> = read_file("./state/json");
+    let state: Map<String, Value> = read_file("./state.json");
     // get placeholder title from request and convert to String
     let title = req.match_info().get("title").unwrap();
     let title_reference = title.clone();
