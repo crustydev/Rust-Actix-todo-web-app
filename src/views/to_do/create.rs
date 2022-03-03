@@ -1,20 +1,38 @@
-use serde_json::value::Value;
-use serde_json::Map;
+use crate::diesel;
+use diesel::prelude::*;
+
 use actix_web::HttpRequest;
+use actix_web::Responder;
 
-use crate::to_do;
-use crate::state::read_file;
-use crate::processes::process_input;
+use crate::database::establish_connection;
+use crate::models::item::new_item::NewItem;
+use crate::models::item::item::Item;
 
-pub async fn create(req: HttpRequest) -> String {
-    // get state from json file
-    let state: Map<String, Value> = read_file("./state.json");
-    // get placeholder title from request and convert to String
-    let title = req.match_info().get("title").unwrap();
-    let title_reference = title.clone();
+use crate::schema::to_do;
+use super::utils::return_state;
 
-    let item = to_do::to_do_factory(&String::from("pending"),
-                title).expect("create");
-    process_input(item, "create".to_string(), &state);
-    return format!("{} created", title_reference)
+
+pub async fn create(req: HttpRequest) -> impl Responder {
+    let title: String = req.match_info().get("title")
+    .unwrap().to_string();
+    let title_ref: String = title.clone();
+
+    let connection = establish_connection();
+
+    // this query gets only columns whose title is equal to our title
+    let items = to_do::table
+        .filter(to_do::columns::title.eq(
+            title_ref.as_str()))
+        .order(to_do::columns::id.asc())
+        .load::<Item>(&connection)
+        .unwrap();
+
+    if items.len() == 0 {
+        let new_post = NewItem::new(title);
+        let _ = diesel::insert_into(
+            to_do::table).values(&new_post)
+            .execute(&connection);
+    }
+    return return_state();
 }
+
