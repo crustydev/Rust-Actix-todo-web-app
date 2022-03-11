@@ -1,6 +1,3 @@
-// this schema acts as a representation for
-// the database itself.
-
 table! {
     to_do (id) {
         id -> Int4,
@@ -9,12 +6,20 @@ table! {
         user_id -> Int4,
     }
 }
+
 table! {
     users (id) {
         id -> Int4,
         username -> Varchar,
         email -> Varchar,
         password -> Varchar,
-        unique_id  -> Varchar
+        unique_id -> Varchar,
     }
 }
+
+joinable!(to_do -> users (user_id));
+
+allow_tables_to_appear_in_same_query!(
+    to_do,
+    users,
+);
