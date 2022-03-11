@@ -10,7 +10,10 @@
  */
 function renderItems(items, processType,
                      elementId, processFunction) {
+    
+    //generated html format string to be inserted into html element with ID "elementId"
     let placeholder = "<div>"
+    //dictionary mapping the ID of generated button elements to their corresponding tasks 
     let itemsMeta = [];
 
     for (i = 0; i < items.length; i++) {
