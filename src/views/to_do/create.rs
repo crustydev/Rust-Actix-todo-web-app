@@ -19,20 +19,22 @@ pub async fn create(req: HttpRequest) -> impl Responder {
 
     let connection = establish_connection();
 
-    // this query gets only columns whose title is equal to our title
+    //start query, checking ONLY for entries that have title "title_ref"
     let items = to_do::table
         .filter(to_do::columns::title.eq(
             title_ref.as_str()))
         .order(to_do::columns::id.asc())
         .load::<Item>(&connection)
         .unwrap();
-
+    
+    // only create if entry doesn't exist already
     if items.len() == 0 {
         let new_post = NewItem::new(title);
-        let _ = diesel::insert_into(
-            to_do::table).values(&new_post)
-            .execute(&connection);
+        let _ = diesel::insert_into(to_do::table)
+                .values(&new_post)
+                .execute(&connection);       
     }
-    return return_state();
+
+    return return_state()
 }
 

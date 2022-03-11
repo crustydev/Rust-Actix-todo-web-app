@@ -14,3 +14,5 @@ serde = "1"
 actix-service = "1.0.6"
 diesel = { version = "1.4.8", features = ["postgres"] }
 dotenv = "0.15.0"
+bcrypt = "0.8.2"
+uuid = {version = "0.8", features = ["serde", "v4"]}
