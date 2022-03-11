@@ -25,6 +25,6 @@ impl NewUser {
 
         return NewUser {username, email,
                         password: hashed_password,
-                        unique_id:: uuid }
+                        unique_id: uuid }
     }
 }
