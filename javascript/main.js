@@ -73,6 +73,7 @@ function editItem() {
         "title": title,
         "status": "done"
     };
+    //sends body alongside request for us(really neat tbh)
     call.send(JSON.stringify(json));
 }
 
