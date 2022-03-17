@@ -8,6 +8,8 @@ use jwt::SignWithKey;
 use sha2::Sha256;
 use std::collections::BTreeMap;
 
+use actix_web::HttpRequest;
+
 //represents encoded user details
 pub struct JwtToken {
     pub user_id: i32,
@@ -23,7 +25,7 @@ impl JwtToken{
         let mut claims = BTreeMap::new();
         //insert user_id into claims
         claims.insert("user_id", user_id);
-        //encode claims into a string and return
+        //encode claims into a string and return signed digest
         let token_str: String = claims.sign_with_key(&key).unwrap();
         return token_str;
     }
@@ -52,5 +54,14 @@ impl JwtToken{
             Err(_) =>  return Err("Could not decode")
         }
     } 
+
+    pub fn decode_from_request(request: HttpRequest)
+    -> Result<JwtToken, &'static str> {
+        match request.headers().get("user-token") {
+            Some(token) => JwtToken::decode(
+                String::from(token.to_str().unwrap())),
+            None => Err("there is no token")
+        }
+    }
 }
 

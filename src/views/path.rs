@@ -1,11 +1,18 @@
 pub struct Path {
-    pub prefix: String
+    pub prefix: String,
+    pub backend: bool
 }
 
 
 impl Path {
     pub fn define(&self, following_path: String) -> String {
-        //to_owned creates owned data from borrowed data by borrowing
-        return self.prefix.to_owned() + &following_path
+        match self.backend {
+            true => {
+                let path: String = self.prefix.to_owned() +
+                                    &following_path;
+                String::from("/api/v1") + &path
+            },
+            false => self.prefix.to_owned() + &following_path
+        }   
     }
 }

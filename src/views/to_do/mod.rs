@@ -11,7 +11,8 @@ use super::path::Path;
 //this function tells the application what function to call for whatever http route
 pub fn item_factory(app:&mut web::ServiceConfig) {
     //define base_path to avoid repitition
-    let base_path: Path = Path{prefix: String::from("/item")};
+    let base_path: Path = Path{prefix: String::from("/item"),
+                                backend: true};
 
     //create view accepts a POST request
     app.route(&base_path.define(String::from("/create/{title}")),

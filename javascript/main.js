@@ -8,6 +8,25 @@
  * @param elementId {String} - the id of the HTML element that the items will be inserted
  * @param processFunction {editItem | deleteItem} - function that is fired once the button is clicked
  */
+
+if(localStorage.getItem("user-token") == null) {
+    window.location.replace(
+        document.location.origin + "/login/");
+} else {
+    let cachedData = Date.parse(
+                    localStorage.getItem("item-cache-date"));
+    let now = new Date();
+    let difference = Math.round((now - cachedData)/(1000));
+
+    if(difference <= 120) {
+        runRenderProcess(JSON.parse(
+                        localStorage.getItem("item-cache-data")));
+    } else {
+        getItems();
+    }
+}
+
+
 function renderItems(items, processType,
                      elementId, processFunction) {
     
@@ -45,20 +64,40 @@ function renderItems(items, processType,
  * @param method {String} - the method of the API call => POST, GET, PUT
  * @returns {XMLHttpRequest} - the API packaged API request
  */
+
+function runRenderProcess(data) {
+    renderItems(data["pending_items"],
+        "edit", "pendingItems", editItem);
+    renderItems(data["done_items"],
+        "delete", "doneItems", deleteItem);
+    document.getElementById(
+        "completeNum").innerHTML = data["done_item_count"];
+    document.getElementById(
+        "pendingNum").innerHTML = data["pending_item_count"];
+}
+
 function apiCall(url, method) {
     let xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
     xhr.addEventListener('readystatechange', function() {
         if (this.readyState === this.DONE) {
-            renderItems(JSON.parse(this.responseText)["pending_items"], "edit", "pendingItems", editItem);
-            renderItems(JSON.parse(this.responseText)["done_items"], "delete", "doneItems", deleteItem);
-            document.getElementById("completeNum").innerHTML = JSON.parse(this.responseText)["done_item_count"];
-            document.getElementById("pendingNum").innerHTML = JSON.parse(this.responseText)["pending_item_count"];
+            if(this.status == 401) {
+                window.location.replace(document.location.origin + "/login/");
+            } else {
+                runRenderProcess(
+                    JSON.parse(this.responseText));
+                localStorage.setItem(
+                    "item-cache-date", new Date());
+                localStorage.setItem(
+                    "item-cache-data", this.responseText);
+            
+            }
         }
     });
-    xhr.open(method, url);
+    xhr.open(method, "/api/v1" + url);
     xhr.setRequestHeader('content-type', 'application/json');
-    xhr.setRequestHeader('user-token', 'token');
+    xhr.setRequestHeader('user-token', localStorage.getItem(
+        "user-token"));
     return xhr
 }
 
@@ -99,8 +138,6 @@ function getItems() {
     let call = apiCall("/item/get", 'GET');
     call.send()
 }
-
-getItems();
 
 document.getElementById("create-button").addEventListener(
     "click", createItem);
