@@ -17,3 +17,21 @@ impl Done {
 impl Get for Done {}
 impl Delete for Done {}
 impl Edit for Done {}
+
+
+#[cfg(test)]
+mod done_test {
+    use super::Done;
+
+    #[test]
+    fn new() {
+        let title: String = String::from("Read the Bible");
+        let expected_status = String::from("done");
+        let expected_title = String::from("Read the Bible");
+
+        let done: Done = Done::new(&title);
+        
+        assert_eq!(expected_title, done.super_struct.title);
+        assert_eq!(expected_status, done.super_struct.status)
+    }
+}

@@ -13,9 +13,7 @@ use log;
 use env_logger;
 
 mod views;
-mod processes;
 mod to_do;
-mod state;
 mod json_serialization;
 mod schema;
 mod database;

@@ -21,3 +21,21 @@ impl Create for Pending {}
 impl Edit for Pending {}
 impl Get for Pending {}
 impl Delete for Pending {}
+
+
+#[cfg(test)]
+mod pending_test {
+    use super::Pending;
+
+    #[test]
+    fn new() {
+        let title: String = String::from("Do Laundry");
+        let expected_title: String = String::from("Do Laundry");
+        let expected_status: String = String::from("pending");
+
+        let pending:Pending = Pending::new(&title);
+
+        assert_eq!(expected_title, pending.super_struct.title);
+        assert_eq!(expected_status, pending.super_struct.status);
+    }
+}
