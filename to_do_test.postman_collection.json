@@ -1,0 +1,196 @@
+{
+	"info": {
+		"_postman_id": "e4a9a659-c10c-4c0e-965f-11feaa252521",
+		"name": "to_do test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1_create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var result = pm.response.json()",
+							"",
+							"pm.test(\"response is ok\", function() {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"returns one pending item\", function(){",
+							"    if(result[\"pending_items\"].length !== 1){",
+							"        throw new Error(",
+							"            \"returns the wrong number of pending items\");",
+							"    }",
+							"})",
+							"",
+							"pm.test(\"Pending item has the correct title\", function(){",
+							"    if(result[\"pending_items\"][0][\"title\"] !== \"washing\"){",
+							"        throw new Error(",
+							"            \"title of the pending item is not 'washing'\");",
+							"    }",
+							"})",
+							"",
+							"pm.test(\"Pending item has the correct status\", function(){",
+							"    if(result[\"pending_items\"][0][\"status\"] != \"pending\"){",
+							"        throw new Error(\"status of the pending item is not 'pending'\");",
+							"    }",
+							"})",
+							"",
+							"pm.test(\"returns zero done items\", function(){",
+							"    if(result[\"done_items\"].length !== 0){",
+							"        throw new Error(\"returns the wrong number of done items\");",
+							"    }",
+							"})",
+							"",
+							"pm.test(\"checking pending item count\", function(){",
+							"    if(result[\"pending_item_count\" !== 1]){",
+							"        throw new Error(\"pending_item_count needs to be one\");",
+							"    }",
+							"})",
+							"",
+							"pm.test(\"checking done item count\", function(){",
+							"    if(result[done_item_count] !== 0){",
+							"        throw new Error(\"done_item_count needs to be zero\");",
+							"    }",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/item/create/washing",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"item",
+						"create",
+						"washing"
+					]
+				},
+				"description": "create a to-do item and then check the return to see if it is stored correctly"
+			},
+			"response": []
+		},
+		{
+			"name": "2_create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var result = pm.response.json()",
+							"pm.test(\"response is ok\", function(){",
+							"    pm.response.to.have.status(200);",
+							"}); pm.test(\"returns two pending items\", function(){",
+							"    if(result[\"pending_items\"].length !== 2){",
+							"        throw new Error(\"returns the wrong number of pending items\");",
+							"    }",
+							"}); pm.test(\"Pending item has the correct title\", function(){",
+							"    if(result[\"pending_items\"][0][\"title\"] !== \"washing\"){",
+							"        throw new Error(\"title of the pending item is not 'washing'\");",
+							"    }",
+							"}); pm.test(\"Pending item has the correct status \", function(){",
+							"    if(result[\"pending_items\"][0][\"status\"] !== \"pending\"){",
+							"        throw new Error(\"status of the pending item is not 'pending'\")",
+							"    }",
+							"}); pm.test(\"Pending item has the correct title\", function(){",
+							"    if(result[\"pending_items\"][1][\"title\"] !== \"cooking\"){",
+							"        throw new Error(\"title of pending item is not 'cooking'\");",
+							"    }",
+							"}); pm.test(\"Pending item has the correct status\", function(){",
+							"    if(result[\"pending_items\"][1][\"status\"] !== \"pending\"){",
+							"        throw new Error(\"status of pending item is not 'pending'\");",
+							"    }",
+							"}); pm.test(\"returns zero done items\", function(){",
+							"    if(result[\"done_items\"].length!==0){",
+							"        throw new Error(\"returns the wrong number of done items\");",
+							"    }",
+							"}); pm.test(\"check pending item count\", function(){",
+							"    if(result[\"pending_items\"].length !== 2){",
+							"        throw new Error(\"pending_item_count needs to be two\");",
+							"    }",
+							"}); pm.test(\"checking done item count\",  function(){",
+							"    if(result[\"done_items\"].length !== 0){",
+							"        throw new Error(\"done_item count should be zero\");",
+							"    }",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/item/create/cooking",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"item",
+						"create",
+						"cooking"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0fQ.UWmeJanF_bZekt-gYXhQRDAAv9XpRsQtKzLKnIN2ue4",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "user-token",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
